@@ -75,7 +75,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabbedPaneAnalizarCodigo.addTab("tab1", pnlAnalizarCodigo);
+        tabbedPaneAnalizarCodigo.addTab("Ingresar Codigo", pnlAnalizarCodigo);
 
         jScrollPane2.setViewportView(txtPaneCodigoAnalizado);
 
@@ -95,7 +95,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
         );
 
-        tabbedPaneAnalizarCodigo.addTab("tab2", pnlCodigoAnalizado);
+        tabbedPaneAnalizarCodigo.addTab("Codigo Analizado", pnlCodigoAnalizado);
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);

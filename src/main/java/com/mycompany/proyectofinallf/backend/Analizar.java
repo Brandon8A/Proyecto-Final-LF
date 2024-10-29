@@ -51,7 +51,9 @@ public class Analizar {
         for (int i = listaTokens.size()-1; 0 <= i; i--) {
             System.out.println("TOKEN --> "+listaTokens.get(i).getLexema());
             analizadorLexicoDB.pintar.darEstilo(listaTokens.get(i).getLexema());
-            analizadorLexicoDB.pintar.pintarPalabra(0, listaTokens.get(i).getLexema().length(), listaTokens.get(i).getColor());
+            if (listaTokens.get(i).getColor() != null) {
+                analizadorLexicoDB.pintar.pintarPalabra(0, listaTokens.get(i).getLexema().length(), listaTokens.get(i).getColor());
+            }
             frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setDocument(analizadorLexicoDB.pintar.txtPaneCodigoAnalizado.getDocument());
 //            if (i == 0) {
 //                frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setText(frameAnalizadorLexico.getTxtPaneCodigoAnalizado().getText() + listaTokens.get(i).getLexema());

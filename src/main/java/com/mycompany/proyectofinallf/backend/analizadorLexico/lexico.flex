@@ -41,8 +41,6 @@ import com.mycompany.proyectofinallf.backend.PintarPalabras;
 %standalone
 
 // EXPRESIONES REGULARES
-//ESPACIOS
-ESPACIOS = [" "\r\t\b\n]
 // ENTERO
 ENTERO = [0-9]+
 // DECIMAL
@@ -102,7 +100,7 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
 
 // REGLAS DE ESCANEO
 <YYINITIAL>{
-    \n                  {System.out.println("Salto de linea, aumentar en 1"); contadorSaltosDeLinea++;}
+    {ESPACIOS}                  {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "CREATE"            {pintar.pintarPalabra((int)yychar,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);}
     "ALTER"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "ADD"               {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
@@ -132,16 +130,16 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     "JOIN"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
 }
 <DDL>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}                  {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "DATABASE"          {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
     "TABLE"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
 }
 <IDENTIFICADOR>{
-    \n                  {System.out.println("Salto de linea, aumentar en 1"); contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     {IDENTIFICADOR}     {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,FUCSIA); añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);}
 }
 <SIGNOS>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "("                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
     ")"                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     ";"                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);}
@@ -150,12 +148,12 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     "="                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
 }
 <ESTRUCTURA_DECLARACION_TABLAS>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(TIPO_DE_DATO);}
     "CONSTRAINT"        {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(CONSTRUIR_LLAVE);}
 }
 <TIPO_DE_DATO>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "INTEGER"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);}
     "BIGINT"            {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);}
     "VARCHAR"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);}
@@ -167,7 +165,7 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     "SERIAL"            {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);}
 }
 <ATRIBUTOS_TABLA>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "PRIMARY"           {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "KEY"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "NOT"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);}
@@ -175,7 +173,7 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
 }
 <ESTABLECER_VALOR_NO_NULO>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "NOT"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);}
     "NULL"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
@@ -183,12 +181,13 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     "UNIQUE"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
 }
 <DEFINIR_VALOR>{
-    \n                  {contadorSaltosDeLinea++;}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     {ENTERO}            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
     {DECIMAL}           {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
     ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);}
 }
 <CONSTRUIR_LLAVE>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
     "FOREIGN"           {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "KEY"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}

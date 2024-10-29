@@ -22,5 +22,6 @@ public enum TipoToken {
     ARITMETICOS,
     RELACIONALES,
     LOGICOS,
-    COMENTARIO_DE_LINEA
+    COMENTARIO_DE_LINEA,
+    ESPACIOS
 }
