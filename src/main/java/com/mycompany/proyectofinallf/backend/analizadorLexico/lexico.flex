@@ -46,16 +46,13 @@ ENTERO = [0-9]+
 // DECIMAL
 DECIMAL = {ENTERO} "." {ENTERO}
 // FECHA
-FECHA = '\'' [0-9]{4} '-' [0-9]{2} '-' [0-9]{2} '\'' 
+FECHA ='(\d{4}-\d{1,2}-\d{1,2})'
 // CADENA EN COMILLAS SIMPLES
-CADENA = '\'' (\\\'|[^\'])* '\'' 
+CADENA = '([^']*?)' 
 // IDENTIFICADOR
 IDENTIFICADOR = [a-z]+[_(a-z0-9)]*
 //ESPACIOS
 ESPACIOS = [" "\r\t\b\n]
-// BOOLEANO
-TRUE = "TRUE"
-FALSE = "FALSE"
 // FUNCIONES DE AGREGACION
 SUM = "SUM"
 AVG = "AVG"
@@ -68,11 +65,6 @@ PARENTESIS_DERECHO = '\)'
 COMA = ','
 PUNTO = '.'
 IGUAL = '='
-// SIGNOS ARITMETICOS
-SUMA = '\+'
-RESTA = '\-'
-MULTIPLICACION = '\*'
-DIVISION = '\/'
 // SIGNOS RELACIONALES
 MENOR = '<'
 MAYOR = '>'
@@ -110,6 +102,7 @@ SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
 // REGLAS DE ESCANEO
 //
 <YYINITIAL>{
+    {FECHA}             {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, AMARILLO, yyline, yycolumn));}
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "CREATE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);}
     "ALTER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL_MODIFICADOR);}
@@ -268,7 +261,7 @@ SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
 <DML_INSERCION>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
-    "INTO"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "INTO"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADORES_PARA_INSERCION);}
 }
 <IDENTIFICADORES_PARA_INSERCION>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
@@ -276,11 +269,26 @@ SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
     "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
-    "VALUES"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "VALUES"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(EVALUAR_DATOS_INSERCION);}
 }
 <EVALUAR_DATOS_INSERCION>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {ENTERO}            {añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
+    {DECIMAL}           {añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
     "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "+"                 {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, NEGRO, yyline, yycolumn));}
+    "-"                 {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, NEGRO, yyline, yycolumn));}
+    "*"                 {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, NEGRO, yyline, yycolumn));}
+    "/"                 {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, NEGRO, yyline, yycolumn));}
+    {FECHA}             {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, AMARILLO, yyline, yycolumn));}
+    {CADENA}            {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, VERDE, yyline, yycolumn));}
+    "FALSE"             {añadirToken(new Token(yytext(), TipoToken.BOOLEANO, AZUL, yyline, yycolumn));}
+    "TRUE"              {añadirToken(new Token(yytext(), TipoToken.BOOLEANO, AZUL, yyline, yycolumn));}
+    "<"                 {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    ">"                 {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    "<="                {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    ">="                {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
 }
