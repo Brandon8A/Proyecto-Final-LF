@@ -5,6 +5,7 @@
 package com.mycompany.proyectofinallf.frontend;
 
 import com.mycompany.proyectofinallf.backend.Analizar;
+import javax.swing.JTextPane;
 
 /**
  *
@@ -29,41 +30,80 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlAnalizadorLexico = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaAnalizadorLexico = new javax.swing.JTextArea();
+        tabbedPaneAnalizarCodigo = new javax.swing.JTabbedPane();
+        pnlAnalizarCodigo = new javax.swing.JPanel();
         btnAnalizarCodigo = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtPaneAnalizarCodigo = new javax.swing.JTextPane();
+        pnlCodigoAnalizado = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtPaneCodigoAnalizado = new javax.swing.JTextPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtAreaAnalizadorLexico.setColumns(20);
-        txtAreaAnalizadorLexico.setRows(5);
-        jScrollPane1.setViewportView(txtAreaAnalizadorLexico);
-
-        btnAnalizarCodigo.setText("Analizar Codigo");
+        btnAnalizarCodigo.setText("Analizar");
         btnAnalizarCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAnalizarCodigoActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout pnlAnalizadorLexicoLayout = new javax.swing.GroupLayout(pnlAnalizadorLexico);
-        pnlAnalizadorLexico.setLayout(pnlAnalizadorLexicoLayout);
-        pnlAnalizadorLexicoLayout.setHorizontalGroup(
-            pnlAnalizadorLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
-            .addGroup(pnlAnalizadorLexicoLayout.createSequentialGroup()
-                .addGap(302, 302, 302)
+        jScrollPane1.setViewportView(txtPaneAnalizarCodigo);
+
+        javax.swing.GroupLayout pnlAnalizarCodigoLayout = new javax.swing.GroupLayout(pnlAnalizarCodigo);
+        pnlAnalizarCodigo.setLayout(pnlAnalizarCodigoLayout);
+        pnlAnalizarCodigoLayout.setHorizontalGroup(
+            pnlAnalizarCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlAnalizarCodigoLayout.createSequentialGroup()
+                .addGap(410, 410, 410)
                 .addComponent(btnAnalizarCodigo)
-                .addContainerGap(304, Short.MAX_VALUE))
+                .addContainerGap(420, Short.MAX_VALUE))
+            .addGroup(pnlAnalizarCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1))
         );
-        pnlAnalizadorLexicoLayout.setVerticalGroup(
-            pnlAnalizadorLexicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlAnalizadorLexicoLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 598, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAnalizarCodigo))
+        pnlAnalizarCodigoLayout.setVerticalGroup(
+            pnlAnalizarCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlAnalizarCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 592, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAnalizarCodigo)
+                .addContainerGap())
         );
+
+        tabbedPaneAnalizarCodigo.addTab("tab1", pnlAnalizarCodigo);
+
+        jScrollPane2.setViewportView(txtPaneCodigoAnalizado);
+
+        javax.swing.GroupLayout pnlCodigoAnalizadoLayout = new javax.swing.GroupLayout(pnlCodigoAnalizado);
+        pnlCodigoAnalizado.setLayout(pnlCodigoAnalizadoLayout);
+        pnlCodigoAnalizadoLayout.setHorizontalGroup(
+            pnlCodigoAnalizadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCodigoAnalizadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 904, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        pnlCodigoAnalizadoLayout.setVerticalGroup(
+            pnlCodigoAnalizadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCodigoAnalizadoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE))
+        );
+
+        tabbedPaneAnalizarCodigo.addTab("tab2", pnlCodigoAnalizado);
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,14 +111,14 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlAnalizadorLexico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabbedPaneAnalizarCodigo)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnlAnalizadorLexico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabbedPaneAnalizarCodigo)
                 .addContainerGap())
         );
 
@@ -87,7 +127,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
 
     private void btnAnalizarCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarCodigoActionPerformed
         // TODO add your handling code here:
-        Analizar analizar = new Analizar(txtAreaAnalizadorLexico.getText());
+        Analizar analizar = new Analizar(txtPaneAnalizarCodigo.getText(), this);
         analizar.analizar();
     }//GEN-LAST:event_btnAnalizarCodigoActionPerformed
 
@@ -126,10 +166,26 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
         });
     }
 
+    public JTextPane getTxtPaneCodigo() {
+        return txtPaneAnalizarCodigo;
+    }
+
+    public JTextPane getTxtPaneCodigoAnalizado() {
+        return txtPaneCodigoAnalizado;
+    }
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizarCodigo;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel pnlAnalizadorLexico;
-    private javax.swing.JTextArea txtAreaAnalizadorLexico;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JPanel pnlAnalizarCodigo;
+    private javax.swing.JPanel pnlCodigoAnalizado;
+    private javax.swing.JTabbedPane tabbedPaneAnalizarCodigo;
+    private javax.swing.JTextPane txtPaneAnalizarCodigo;
+    private javax.swing.JTextPane txtPaneCodigoAnalizado;
     // End of variables declaration//GEN-END:variables
 }

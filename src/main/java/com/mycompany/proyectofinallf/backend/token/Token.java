@@ -22,4 +22,26 @@ public class Token {
         this.fila = fila;
         this.columna = columna;
     }
+
+    public String getLexema() {
+        return lexema;
+    }
+
+    public TipoToken getTipoToken() {
+        return tipoToken;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public int getFila() {
+        return fila;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+    
+    
 }

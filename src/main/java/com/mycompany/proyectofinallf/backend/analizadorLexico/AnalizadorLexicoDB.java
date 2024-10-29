@@ -7,6 +7,8 @@ package com.mycompany.proyectofinallf.backend.analizadorLexico;
 import java.util.ArrayList;
 import java.util.List;
 import com.mycompany.proyectofinallf.backend.token.Token;
+import com.mycompany.proyectofinallf.backend.token.TipoToken;
+import com.mycompany.proyectofinallf.backend.PintarPalabras;
 
 
 @SuppressWarnings("fallthrough")
@@ -22,8 +24,15 @@ public class AnalizadorLexicoDB {
   public static final int YYINITIAL = 0;
   public static final int CONSULTA_SQL = 2;
   public static final int COMENTARIO_LINEA = 4;
-  public static final int CREATE = 6;
+  public static final int DDL = 6;
   public static final int IDENTIFICADOR = 8;
+  public static final int SIGNOS = 10;
+  public static final int TIPO_DE_DATO = 12;
+  public static final int ESTRUCTURA_DECLARACION_TABLAS = 14;
+  public static final int ATRIBUTOS_TABLA = 16;
+  public static final int DEFINIR_VALOR = 18;
+  public static final int ESTABLECER_VALOR_NO_NULO = 20;
+  public static final int CONSTRUIR_LLAVE = 22;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -32,7 +41,8 @@ public class AnalizadorLexicoDB {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
-     0,  0,  1,  1,  2,  2,  3,  3,  4, 4
+     0,  0,  1,  1,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6, 
+     7,  7,  8,  8,  9,  9, 10, 10
   };
 
   /**
@@ -41,7 +51,7 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_CMAP_TOP = zzUnpackcmap_top();
 
   private static final String ZZ_CMAP_TOP_PACKED_0 =
-    "\1\0\37\u0100\1\u0200\267\u0100\10\u0300\u1020\u0100";
+    "\1\0\u10ff\u0100";
 
   private static int [] zzUnpackcmap_top() {
     int [] result = new int[4352];
@@ -69,12 +79,15 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\12\0\1\1\3\2\63\0\1\3\1\4\1\5\1\6"+
-    "\1\7\6\0\1\10\5\0\1\11\1\12\1\13\14\0"+
-    "\32\14\12\0\1\2\u01a2\0\2\2\326\0\u0100\2";
+    "\12\0\1\1\35\0\1\2\1\3\2\0\1\4\1\0"+
+    "\1\5\1\0\12\6\1\0\1\7\1\0\1\10\3\0"+
+    "\1\11\1\12\1\13\1\14\1\15\1\16\1\17\1\20"+
+    "\1\21\1\22\1\23\1\24\1\25\1\26\1\27\1\30"+
+    "\1\31\1\32\1\33\1\34\1\35\1\36\1\37\1\40"+
+    "\1\41\5\0\1\42\1\0\32\43\u0185\0";
 
   private static int [] zzUnpackcmap_blocks() {
-    int [] result = new int[1024];
+    int [] result = new int[512];
     int offset = 0;
     offset = zzUnpackcmap_blocks(ZZ_CMAP_BLOCKS_PACKED_0, offset, result);
     return result;
@@ -98,11 +111,14 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\5\0\2\1\1\2\1\3\2\1\1\4\13\0\1\5"+
-    "\1\6\1\0";
+    "\13\0\1\1\1\2\20\1\1\3\2\1\1\4\1\5"+
+    "\1\6\1\7\10\1\1\10\1\11\1\12\3\1\1\13"+
+    "\1\14\1\15\2\1\1\16\2\1\1\17\2\0\2\20"+
+    "\104\0\1\21\1\22\1\0\1\23\21\0\1\24\16\0"+
+    "\1\25\11\0\1\26\15\0\1\27";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[26];
+    int [] result = new int[192];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -127,13 +143,33 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\15\0\32\0\47\0\64\0\101\0\116\0\101"+
-    "\0\101\0\133\0\150\0\165\0\202\0\217\0\234\0\251"+
-    "\0\266\0\303\0\320\0\335\0\352\0\367\0\u0104\0\101"+
-    "\0\101\0\u0111";
+    "\0\0\0\44\0\110\0\154\0\220\0\264\0\330\0\374"+
+    "\0\u0120\0\u0144\0\u0168\0\u018c\0\u018c\0\u01b0\0\u01d4\0\u01f8"+
+    "\0\u021c\0\u0240\0\u0264\0\u0288\0\u02ac\0\u02d0\0\u02f4\0\u0318"+
+    "\0\u033c\0\u0360\0\u0384\0\u03a8\0\u03cc\0\u018c\0\u03f0\0\u0414"+
+    "\0\u0438\0\u018c\0\u018c\0\u018c\0\u045c\0\u0480\0\u04a4\0\u04c8"+
+    "\0\u04ec\0\u0510\0\u0534\0\u0558\0\u057c\0\u018c\0\u018c\0\u05a0"+
+    "\0\u05c4\0\u05e8\0\u018c\0\u060c\0\u018c\0\u0630\0\u0654\0\u018c"+
+    "\0\u0678\0\u069c\0\u06c0\0\u06e4\0\u0708\0\u072c\0\u018c\0\u0750"+
+    "\0\u0774\0\u0798\0\u07bc\0\u07e0\0\u0804\0\u0828\0\u084c\0\u0870"+
+    "\0\u0894\0\u08b8\0\u08dc\0\u0900\0\u0924\0\u0948\0\u096c\0\u0990"+
+    "\0\u09b4\0\u09d8\0\u09fc\0\u0a20\0\u0a44\0\u0a68\0\u0a8c\0\u0ab0"+
+    "\0\u0ad4\0\u0af8\0\u0b1c\0\u0b40\0\u0b64\0\u0b88\0\u0bac\0\u0bd0"+
+    "\0\u0bf4\0\u0c18\0\u0c3c\0\u0c60\0\u0c84\0\u0ca8\0\u0ccc\0\u0cf0"+
+    "\0\u0d14\0\u072c\0\u0d38\0\u0d5c\0\u0d80\0\u0da4\0\u0dc8\0\u0dec"+
+    "\0\u0e10\0\u0e34\0\u0e58\0\u0e7c\0\u0ea0\0\u0ec4\0\u0ee8\0\u0f0c"+
+    "\0\u0f30\0\u0f54\0\u0f78\0\u0f9c\0\u0fc0\0\u0fe4\0\u1008\0\u102c"+
+    "\0\u1050\0\u1074\0\u1098\0\u018c\0\u018c\0\u10bc\0\u0bd0\0\u10e0"+
+    "\0\u1104\0\u1128\0\u114c\0\u1170\0\u1194\0\u11b8\0\u11dc\0\u1200"+
+    "\0\u1224\0\u1248\0\u126c\0\u1290\0\u12b4\0\u12d8\0\u12fc\0\u1320"+
+    "\0\u018c\0\u1344\0\u1368\0\u138c\0\u13b0\0\u13d4\0\u13f8\0\u141c"+
+    "\0\u1440\0\u1464\0\u1488\0\u14ac\0\u14d0\0\u14f4\0\u1518\0\u018c"+
+    "\0\u153c\0\u1560\0\u1584\0\u15a8\0\u15cc\0\u15f0\0\u1614\0\u1638"+
+    "\0\u165c\0\u018c\0\u1680\0\u16a4\0\u16c8\0\u16ec\0\u1710\0\u1734"+
+    "\0\u1758\0\u177c\0\u17a0\0\u17c4\0\u17e8\0\u180c\0\u1830\0\u018c";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[26];
+    int [] result = new int[192];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -156,15 +192,67 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\5\6\1\7\24\6\1\10\1\11\1\6\12\10\6\6"+
-    "\1\12\4\6\1\13\15\6\1\14\26\0\1\15\6\0"+
-    "\1\16\14\0\1\17\25\0\1\14\7\0\1\20\20\0"+
-    "\1\21\5\0\1\22\13\0\1\23\14\0\1\24\21\0"+
-    "\1\25\17\0\1\26\5\0\1\27\17\0\1\30\14\0"+
-    "\1\31\10\0\1\32\23\0\1\25\2\0";
+    "\1\14\1\15\7\14\1\16\1\17\1\20\1\21\1\22"+
+    "\1\23\1\24\1\14\1\25\1\26\1\14\1\27\2\14"+
+    "\1\30\3\14\1\31\1\32\1\33\1\34\1\35\51\14"+
+    "\1\36\12\14\1\37\17\14\1\40\10\14\1\15\41\14"+
+    "\1\41\1\14\1\36\1\42\3\43\1\14\1\44\1\43"+
+    "\34\14\1\36\10\14\1\45\1\14\1\46\4\14\1\47"+
+    "\4\14\1\50\4\14\1\51\1\52\1\14\1\53\6\14"+
+    "\1\36\11\14\1\54\27\14\1\55\1\14\1\36\1\56"+
+    "\1\14\1\57\16\14\1\60\2\14\1\61\1\14\1\62"+
+    "\14\14\1\36\1\14\1\63\2\14\1\64\36\14\1\36"+
+    "\2\14\1\57\2\14\1\65\16\14\1\66\6\14\1\67"+
+    "\10\14\2\70\3\14\1\65\6\14\1\71\4\14\1\60"+
+    "\6\14\1\72\10\14\1\73\60\0\1\74\7\0\1\75"+
+    "\6\0\1\76\51\0\1\77\13\0\1\100\15\0\1\101"+
+    "\2\0\1\102\26\0\1\103\14\0\1\104\51\0\1\105"+
+    "\35\0\1\106\43\0\1\107\27\0\1\77\7\0\1\110"+
+    "\44\0\1\111\35\0\1\112\50\0\1\77\3\0\1\113"+
+    "\26\0\1\114\67\0\1\115\32\0\1\116\24\0\1\117"+
+    "\52\0\1\120\34\0\1\121\43\0\1\122\34\0\2\41"+
+    "\2\0\1\41\33\0\2\41\21\0\1\123\5\0\1\124"+
+    "\25\0\1\125\3\0\1\126\54\0\1\127\52\0\1\130"+
+    "\23\0\1\131\43\0\1\132\37\0\1\133\61\0\1\134"+
+    "\16\0\2\55\2\0\1\55\33\0\2\55\15\0\1\135"+
+    "\55\0\1\136\46\0\1\137\16\0\1\140\1\64\64\0"+
+    "\1\136\5\0\1\141\34\0\1\142\44\0\1\143\31\0"+
+    "\1\144\30\0\2\73\2\0\1\73\33\0\2\73\14\0"+
+    "\1\77\63\0\1\145\22\0\1\77\63\0\1\146\34\0"+
+    "\1\147\34\0\1\150\52\0\1\151\6\0\1\152\37\0"+
+    "\1\153\35\0\1\154\51\0\1\155\43\0\1\156\47\0"+
+    "\1\157\1\160\30\0\1\161\47\0\1\162\32\0\1\145"+
+    "\53\0\1\163\7\0\1\77\37\0\1\164\27\0\1\165"+
+    "\53\0\1\166\34\0\1\167\62\0\1\170\21\0\1\171"+
+    "\50\0\1\172\53\0\1\173\50\0\1\174\22\0\1\175"+
+    "\64\0\1\176\34\0\1\177\50\0\1\200\51\0\1\201"+
+    "\35\0\1\202\37\0\1\203\56\0\1\204\36\0\1\205"+
+    "\30\0\1\206\30\0\1\207\61\0\1\210\40\0\1\211"+
+    "\54\0\1\212\27\0\1\213\42\0\1\214\41\0\1\215"+
+    "\65\0\1\216\17\0\1\217\47\0\1\220\56\0\1\77"+
+    "\46\0\1\221\35\0\1\77\53\0\1\153\23\0\1\222"+
+    "\55\0\1\77\42\0\1\77\36\0\1\221\37\0\1\223"+
+    "\43\0\1\77\37\0\1\220\67\0\1\224\40\0\1\164"+
+    "\22\0\1\225\56\0\1\226\40\0\1\227\46\0\1\230"+
+    "\34\0\1\231\47\0\1\232\37\0\1\233\43\0\1\234"+
+    "\47\0\1\235\56\0\1\231\22\0\1\236\63\0\1\237"+
+    "\35\0\1\240\42\0\1\204\50\0\1\241\27\0\1\242"+
+    "\43\0\1\243\60\0\1\77\22\0\1\244\57\0\1\161"+
+    "\52\0\1\245\43\0\1\164\43\0\1\77\41\0\1\221"+
+    "\24\0\1\221\45\0\1\246\40\0\1\247\46\0\1\250"+
+    "\54\0\1\201\32\0\1\251\53\0\1\235\35\0\1\252"+
+    "\56\0\1\253\22\0\1\254\52\0\1\255\57\0\1\256"+
+    "\20\0\1\257\67\0\1\164\27\0\1\260\54\0\1\261"+
+    "\25\0\1\164\44\0\1\262\61\0\1\77\21\0\1\263"+
+    "\43\0\1\264\47\0\1\265\47\0\1\266\46\0\1\231"+
+    "\30\0\1\265\64\0\1\267\43\0\1\135\30\0\1\270"+
+    "\41\0\1\271\61\0\1\226\36\0\1\231\47\0\1\231"+
+    "\24\0\1\231\41\0\1\272\60\0\1\204\43\0\1\273"+
+    "\36\0\1\274\35\0\1\275\56\0\1\276\32\0\1\277"+
+    "\62\0\1\300\42\0\1\204\10\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[286];
+    int [] result = new int[6228];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -207,10 +295,13 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\5\0\1\11\1\1\2\11\3\1\13\0\2\11\1\0";
+    "\13\0\2\11\20\1\1\11\3\1\3\11\11\1\2\11"+
+    "\3\1\1\11\1\1\1\11\2\1\1\11\3\1\2\0"+
+    "\1\1\1\11\104\0\2\11\1\0\1\1\21\0\1\11"+
+    "\16\0\1\11\11\0\1\11\15\0\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[26];
+    int [] result = new int[192];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -289,8 +380,27 @@ public class AnalizadorLexicoDB {
 
   /* user code: */
     // Código Java
-    private List<Token> lista = new ArrayList<>();
+    private final String NARANJA = "#F0A30A";
+    private final String MORADO = "#6A00FF";
+    private final String AZUL = "#414ED9";
+    private final String AMARILLO = "#FFD300";
+    private final String VERDE = "#60A917";
+    private final String FUCSIA = "#D80073";
+    private final String NEGRO = "#000000";
+    private final String GRIS = "#757575";
+
+    private List<Token> listaTokens = new ArrayList<>();
     private List<Token> listaErrores = new ArrayList<>();
+    public PintarPalabras pintar = new PintarPalabras();
+    private int contadorSaltosDeLinea = 0;
+
+    public void añadirToken(Token token){
+        listaTokens.add(token);
+    }
+
+    public List<Token> getListaTokens(){
+        return listaTokens;
+    }
 
 
   /**
@@ -707,32 +817,117 @@ public class AnalizadorLexicoDB {
             { System.out.print(yytext());
             }
           // fall through
-          case 7: break;
+          case 24: break;
           case 2:
-            { System.out.println("Parte del comentario: " + yytext());
+            { System.out.println("Salto de linea, aumentar en 1"); contadorSaltosDeLinea++;
             }
           // fall through
-          case 8: break;
+          case 25: break;
           case 3:
-            { yybegin(CONSULTA_SQL); System.out.println("Cambiando a consulta SQL. ");
+            { contadorSaltosDeLinea++;
             }
           // fall through
-          case 9: break;
+          case 26: break;
           case 4:
-            { System.out.println("Nombre identificador: " +yytext());
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,FUCSIA); añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);
             }
           // fall through
-          case 10: break;
+          case 27: break;
           case 5:
-            { yybegin(IDENTIFICADOR);System.out.println("De CREATE "+ yytext()+" a IDENTIFICADOR");
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);
             }
           // fall through
-          case 11: break;
+          case 28: break;
           case 6:
-            { yybegin(CREATE); System.out.println("Iniciando en initial, pasando a "+yytext());
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));
             }
           // fall through
-          case 12: break;
+          case 29: break;
+          case 7:
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);
+            }
+          // fall through
+          case 30: break;
+          case 8:
+            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(TIPO_DE_DATO);
+            }
+          // fall through
+          case 31: break;
+          case 9:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(DEFINIR_VALOR);
+            }
+          // fall through
+          case 32: break;
+          case 10:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);
+            }
+          // fall through
+          case 33: break;
+          case 11:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);
+            }
+          // fall through
+          case 34: break;
+          case 12:
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));
+            }
+          // fall through
+          case 35: break;
+          case 13:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);
+            }
+          // fall through
+          case 36: break;
+          case 14:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));
+            }
+          // fall through
+          case 37: break;
+          case 15:
+            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));
+            }
+          // fall through
+          case 38: break;
+          case 16:
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));
+            }
+          // fall through
+          case 39: break;
+          case 17:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));
+            }
+          // fall through
+          case 40: break;
+          case 18:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);
+            }
+          // fall through
+          case 41: break;
+          case 19:
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));
+            }
+          // fall through
+          case 42: break;
+          case 20:
+            { añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);
+            }
+          // fall through
+          case 43: break;
+          case 21:
+            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);
+            }
+          // fall through
+          case 44: break;
+          case 22:
+            { pintar.pintarPalabra((int)yychar,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);
+            }
+          // fall through
+          case 45: break;
+          case 23:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(CONSTRUIR_LLAVE);
+            }
+          // fall through
+          case 46: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

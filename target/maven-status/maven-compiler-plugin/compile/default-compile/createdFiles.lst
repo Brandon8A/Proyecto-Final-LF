@@ -4,4 +4,5 @@ com/mycompany/proyectofinallf/backend/Analizar.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$2.class
 com/mycompany/proyectofinallf/backend/analizadorLexico/AnalizadorLexicoDB.class
 com/mycompany/proyectofinallf/backend/token/TipoToken.class
+com/mycompany/proyectofinallf/backend/PintarPalabras.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$1.class
