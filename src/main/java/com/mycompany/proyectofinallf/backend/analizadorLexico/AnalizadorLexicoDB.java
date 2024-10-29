@@ -33,6 +33,15 @@ public class AnalizadorLexicoDB {
   public static final int DEFINIR_VALOR = 18;
   public static final int ESTABLECER_VALOR_NO_NULO = 20;
   public static final int CONSTRUIR_LLAVE = 22;
+  public static final int DDL_MODIFICADOR = 24;
+  public static final int IDENTIFICADOR_UNIQUE = 26;
+  public static final int IDENTIFICADOR_REFERENCES = 28;
+  public static final int IDENTIFICADOR_KEY = 30;
+  public static final int MODIFICADOR_DROP = 32;
+  public static final int DML_INSERCION = 34;
+  public static final int IDENTIFICADORES_PARA_INSERCION = 36;
+  public static final int EVALUAR_DATOS_INSERCION = 38;
+  public static final int DEFINIR_VALOR_NUEMRIC = 40;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -42,7 +51,8 @@ public class AnalizadorLexicoDB {
    */
   private static final int ZZ_LEXSTATE[] = {
      0,  0,  1,  1,  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6, 
-     7,  7,  8,  8,  9,  9, 10, 10
+     7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 
+    15, 15, 16, 16, 17, 17, 18, 18, 19, 19
   };
 
   /**
@@ -112,14 +122,15 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\13\0\1\1\1\2\22\1\1\3\1\4\1\5\1\6"+
-    "\10\1\1\7\1\10\1\11\3\1\1\12\1\13\1\14"+
-    "\2\1\1\15\2\1\1\16\2\0\2\17\104\0\1\20"+
-    "\1\21\1\0\1\22\21\0\1\23\16\0\1\24\11\0"+
-    "\1\25\15\0\1\26";
+    "\24\0\1\1\1\2\17\1\1\3\1\4\1\5\1\6"+
+    "\10\1\1\7\1\10\3\1\1\11\1\12\1\13\4\1"+
+    "\1\14\13\1\1\15\7\1\1\0\2\16\120\0\1\17"+
+    "\1\0\1\20\14\0\1\21\17\0\1\22\10\0\1\23"+
+    "\16\0\1\24\11\0\1\25\3\0\1\26\23\0\1\27"+
+    "\1\30\12\0\1\31\4\0\1\32\6\0\1\33\1\34";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[191];
+    int [] result = new int[279];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -145,32 +156,43 @@ public class AnalizadorLexicoDB {
 
   private static final String ZZ_ROWMAP_PACKED_0 =
     "\0\0\0\44\0\110\0\154\0\220\0\264\0\330\0\374"+
-    "\0\u0120\0\u0144\0\u0168\0\u018c\0\u018c\0\u01b0\0\u01d4\0\u01f8"+
-    "\0\u021c\0\u0240\0\u0264\0\u0288\0\u02ac\0\u02d0\0\u02f4\0\u0318"+
+    "\0\u0120\0\u0144\0\u0168\0\u018c\0\u01b0\0\u01d4\0\u01f8\0\u021c"+
+    "\0\u0240\0\u0264\0\u0288\0\u02ac\0\u02d0\0\u02d0\0\u02f4\0\u0318"+
     "\0\u033c\0\u0360\0\u0384\0\u03a8\0\u03cc\0\u03f0\0\u0414\0\u0438"+
-    "\0\u018c\0\u018c\0\u018c\0\u045c\0\u0480\0\u04a4\0\u04c8\0\u04ec"+
-    "\0\u0510\0\u0534\0\u0558\0\u057c\0\u018c\0\u018c\0\u05a0\0\u05c4"+
-    "\0\u05e8\0\u018c\0\u060c\0\u018c\0\u0630\0\u0654\0\u018c\0\u0678"+
-    "\0\u069c\0\u06c0\0\u06e4\0\u0708\0\u072c\0\u018c\0\u0750\0\u0774"+
-    "\0\u0798\0\u07bc\0\u07e0\0\u0804\0\u0828\0\u084c\0\u0870\0\u0894"+
-    "\0\u08b8\0\u08dc\0\u0900\0\u0924\0\u0948\0\u096c\0\u0990\0\u09b4"+
-    "\0\u09d8\0\u09fc\0\u0a20\0\u0a44\0\u0a68\0\u0a8c\0\u0ab0\0\u0ad4"+
-    "\0\u0af8\0\u0b1c\0\u0b40\0\u0b64\0\u0b88\0\u0bac\0\u0bd0\0\u0bf4"+
-    "\0\u0c18\0\u0c3c\0\u0c60\0\u0c84\0\u0ca8\0\u0ccc\0\u0cf0\0\u0d14"+
-    "\0\u072c\0\u0d38\0\u0d5c\0\u0d80\0\u0da4\0\u0dc8\0\u0dec\0\u0e10"+
-    "\0\u0e34\0\u0e58\0\u0e7c\0\u0ea0\0\u0ec4\0\u0ee8\0\u0f0c\0\u0f30"+
-    "\0\u0f54\0\u0f78\0\u0f9c\0\u0fc0\0\u0fe4\0\u1008\0\u102c\0\u1050"+
-    "\0\u1074\0\u1098\0\u018c\0\u018c\0\u10bc\0\u0bd0\0\u10e0\0\u1104"+
-    "\0\u1128\0\u114c\0\u1170\0\u1194\0\u11b8\0\u11dc\0\u1200\0\u1224"+
-    "\0\u1248\0\u126c\0\u1290\0\u12b4\0\u12d8\0\u12fc\0\u1320\0\u018c"+
-    "\0\u1344\0\u1368\0\u138c\0\u13b0\0\u13d4\0\u13f8\0\u141c\0\u1440"+
-    "\0\u1464\0\u1488\0\u14ac\0\u14d0\0\u14f4\0\u1518\0\u018c\0\u153c"+
-    "\0\u1560\0\u1584\0\u15a8\0\u15cc\0\u15f0\0\u1614\0\u1638\0\u165c"+
-    "\0\u018c\0\u1680\0\u16a4\0\u16c8\0\u16ec\0\u1710\0\u1734\0\u1758"+
-    "\0\u177c\0\u17a0\0\u17c4\0\u17e8\0\u180c\0\u1830\0\u018c";
+    "\0\u045c\0\u0480\0\u04a4\0\u04c8\0\u04ec\0\u0510\0\u02d0\0\u02d0"+
+    "\0\u02d0\0\u0534\0\u0558\0\u057c\0\u05a0\0\u05c4\0\u05e8\0\u060c"+
+    "\0\u0630\0\u0654\0\u02d0\0\u0678\0\u069c\0\u06c0\0\u02d0\0\u06e4"+
+    "\0\u02d0\0\u0708\0\u072c\0\u0750\0\u0774\0\u0798\0\u07bc\0\u07e0"+
+    "\0\u0804\0\u0828\0\u084c\0\u0870\0\u0894\0\u08b8\0\u08dc\0\u0900"+
+    "\0\u0924\0\u0948\0\u096c\0\u0990\0\u09b4\0\u09d8\0\u09fc\0\u0a20"+
+    "\0\u0a44\0\u0a68\0\u0a8c\0\u02d0\0\u0ab0\0\u0ad4\0\u0af8\0\u0b1c"+
+    "\0\u0b40\0\u0b64\0\u0b88\0\u0bac\0\u0bd0\0\u0bf4\0\u0c18\0\u0c3c"+
+    "\0\u0c60\0\u0c84\0\u0ca8\0\u0ccc\0\u0cf0\0\u0d14\0\u0d38\0\u0d5c"+
+    "\0\u0d80\0\u0da4\0\u0dc8\0\u0dec\0\u0318\0\u0e10\0\u0e34\0\u0e58"+
+    "\0\u0e7c\0\u0ea0\0\u0ec4\0\u0ee8\0\u0f0c\0\u0f30\0\u0f54\0\u0f78"+
+    "\0\u0f9c\0\u0fc0\0\u0fe4\0\u1008\0\u102c\0\u1050\0\u1074\0\u1098"+
+    "\0\u10bc\0\u10e0\0\u1104\0\u1128\0\u114c\0\u1170\0\u1194\0\u11b8"+
+    "\0\u11dc\0\u1200\0\u1224\0\u1248\0\u126c\0\u0a8c\0\u1290\0\u12b4"+
+    "\0\u12d8\0\u12fc\0\u1320\0\u1344\0\u1368\0\u138c\0\u13b0\0\u13d4"+
+    "\0\u13f8\0\u141c\0\u1440\0\u1464\0\u1488\0\u14ac\0\u14d0\0\u14f4"+
+    "\0\u1518\0\u153c\0\u1560\0\u1584\0\u02d0\0\u15a8\0\u0e58\0\u15cc"+
+    "\0\u15f0\0\u1614\0\u1638\0\u165c\0\u1680\0\u16a4\0\u16c8\0\u16ec"+
+    "\0\u1710\0\u1734\0\u1758\0\u02d0\0\u177c\0\u17a0\0\u17c4\0\u17e8"+
+    "\0\u180c\0\u1830\0\u1854\0\u1878\0\u189c\0\u18c0\0\u18e4\0\u1908"+
+    "\0\u192c\0\u1950\0\u1974\0\u02d0\0\u1998\0\u19bc\0\u19e0\0\u1a04"+
+    "\0\u1a28\0\u1a4c\0\u1a70\0\u1a94\0\u02d0\0\u1ab8\0\u1adc\0\u1b00"+
+    "\0\u1b24\0\u1b48\0\u1b6c\0\u1b90\0\u1bb4\0\u1bd8\0\u1bfc\0\u1c20"+
+    "\0\u1c44\0\u1c68\0\u1c8c\0\u02d0\0\u1cb0\0\u1cd4\0\u1cf8\0\u1d1c"+
+    "\0\u1d40\0\u1d64\0\u1d88\0\u1dac\0\u1dd0\0\u02d0\0\u1df4\0\u1e18"+
+    "\0\u1e3c\0\u02d0\0\u1e60\0\u1e84\0\u1ea8\0\u1ecc\0\u1ef0\0\u1f14"+
+    "\0\u1f38\0\u1f5c\0\u1f80\0\u1fa4\0\u1fc8\0\u1fec\0\u2010\0\u2034"+
+    "\0\u2058\0\u207c\0\u20a0\0\u20c4\0\u20e8\0\u02d0\0\u02d0\0\u210c"+
+    "\0\u2130\0\u2154\0\u2178\0\u219c\0\u21c0\0\u21e4\0\u2208\0\u222c"+
+    "\0\u2250\0\u02d0\0\u2274\0\u2298\0\u22bc\0\u22e0\0\u02d0\0\u2304"+
+    "\0\u2328\0\u234c\0\u2370\0\u2394\0\u23b8\0\u02d0\0\u02d0";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[191];
+    int [] result = new int[279];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -193,67 +215,97 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\14\1\15\7\14\1\16\1\17\1\20\1\21\1\22"+
-    "\1\23\1\24\1\14\1\25\1\26\1\14\1\27\2\14"+
-    "\1\30\3\14\1\31\1\32\1\33\1\34\1\35\51\14"+
-    "\1\15\12\14\1\36\17\14\1\37\10\14\1\15\41\14"+
-    "\1\40\1\14\1\15\1\41\3\42\1\14\1\43\1\42"+
-    "\34\14\1\15\10\14\1\44\1\14\1\45\4\14\1\46"+
-    "\4\14\1\47\4\14\1\50\1\51\1\14\1\52\6\14"+
-    "\1\15\11\14\1\53\27\14\1\54\1\14\1\15\1\55"+
-    "\1\14\1\56\16\14\1\57\2\14\1\60\1\14\1\61"+
-    "\14\14\1\15\1\14\1\62\2\14\1\63\36\14\1\15"+
-    "\2\14\1\56\2\14\1\64\16\14\1\65\6\14\1\66"+
-    "\7\14\1\15\2\67\3\14\1\64\6\14\1\70\4\14"+
-    "\1\57\6\14\1\71\10\14\1\72\60\0\1\73\7\0"+
-    "\1\74\6\0\1\75\51\0\1\76\13\0\1\77\15\0"+
-    "\1\100\2\0\1\101\26\0\1\102\14\0\1\103\51\0"+
-    "\1\104\35\0\1\105\43\0\1\106\27\0\1\76\7\0"+
-    "\1\107\44\0\1\110\35\0\1\111\50\0\1\76\3\0"+
-    "\1\112\26\0\1\113\67\0\1\114\32\0\1\115\24\0"+
-    "\1\116\52\0\1\117\34\0\1\120\43\0\1\121\34\0"+
-    "\2\40\2\0\1\40\33\0\2\40\21\0\1\122\5\0"+
-    "\1\123\25\0\1\124\3\0\1\125\54\0\1\126\52\0"+
-    "\1\127\23\0\1\130\43\0\1\131\37\0\1\132\61\0"+
-    "\1\133\16\0\2\54\2\0\1\54\33\0\2\54\15\0"+
-    "\1\134\55\0\1\135\46\0\1\136\16\0\1\137\1\63"+
-    "\64\0\1\135\5\0\1\140\34\0\1\141\44\0\1\142"+
-    "\31\0\1\143\30\0\2\72\2\0\1\72\33\0\2\72"+
-    "\14\0\1\76\63\0\1\144\22\0\1\76\63\0\1\145"+
-    "\34\0\1\146\34\0\1\147\52\0\1\150\6\0\1\151"+
-    "\37\0\1\152\35\0\1\153\51\0\1\154\43\0\1\155"+
-    "\47\0\1\156\1\157\30\0\1\160\47\0\1\161\32\0"+
-    "\1\144\53\0\1\162\7\0\1\76\37\0\1\163\27\0"+
-    "\1\164\53\0\1\165\34\0\1\166\62\0\1\167\21\0"+
-    "\1\170\50\0\1\171\53\0\1\172\50\0\1\173\22\0"+
-    "\1\174\64\0\1\175\34\0\1\176\50\0\1\177\51\0"+
-    "\1\200\35\0\1\201\37\0\1\202\56\0\1\203\36\0"+
-    "\1\204\30\0\1\205\30\0\1\206\61\0\1\207\40\0"+
-    "\1\210\54\0\1\211\27\0\1\212\42\0\1\213\41\0"+
-    "\1\214\65\0\1\215\17\0\1\216\47\0\1\217\56\0"+
-    "\1\76\46\0\1\220\35\0\1\76\53\0\1\152\23\0"+
-    "\1\221\55\0\1\76\42\0\1\76\36\0\1\220\37\0"+
-    "\1\222\43\0\1\76\37\0\1\217\67\0\1\223\40\0"+
-    "\1\163\22\0\1\224\56\0\1\225\40\0\1\226\46\0"+
-    "\1\227\34\0\1\230\47\0\1\231\37\0\1\232\43\0"+
-    "\1\233\47\0\1\234\56\0\1\230\22\0\1\235\63\0"+
-    "\1\236\35\0\1\237\42\0\1\203\50\0\1\240\27\0"+
-    "\1\241\43\0\1\242\60\0\1\76\22\0\1\243\57\0"+
-    "\1\160\52\0\1\244\43\0\1\163\43\0\1\76\41\0"+
-    "\1\220\24\0\1\220\45\0\1\245\40\0\1\246\46\0"+
-    "\1\247\54\0\1\200\32\0\1\250\53\0\1\234\35\0"+
-    "\1\251\56\0\1\252\22\0\1\253\52\0\1\254\57\0"+
-    "\1\255\20\0\1\256\67\0\1\163\27\0\1\257\54\0"+
-    "\1\260\25\0\1\163\44\0\1\261\61\0\1\76\21\0"+
-    "\1\262\43\0\1\263\47\0\1\264\47\0\1\265\46\0"+
-    "\1\230\30\0\1\264\64\0\1\266\43\0\1\134\30\0"+
-    "\1\267\41\0\1\270\61\0\1\225\36\0\1\230\47\0"+
-    "\1\230\24\0\1\230\41\0\1\271\60\0\1\203\43\0"+
-    "\1\272\36\0\1\273\35\0\1\274\56\0\1\275\32\0"+
-    "\1\276\62\0\1\277\42\0\1\203\10\0";
+    "\1\25\1\26\7\25\1\27\1\30\1\31\1\32\1\25"+
+    "\1\33\1\34\1\25\1\35\1\36\1\25\1\37\2\25"+
+    "\1\40\3\25\1\41\1\25\1\42\1\25\1\43\51\25"+
+    "\1\26\12\25\1\44\17\25\1\45\10\25\1\26\41\25"+
+    "\1\46\1\25\1\26\1\47\3\50\1\25\1\51\1\50"+
+    "\34\25\1\26\10\25\1\52\1\25\1\53\4\25\1\54"+
+    "\4\25\1\55\4\25\1\56\1\57\1\25\1\60\6\25"+
+    "\1\26\11\25\1\61\27\25\1\62\1\25\1\26\1\63"+
+    "\1\25\1\47\16\25\1\64\2\25\1\65\1\25\1\66"+
+    "\14\25\1\26\1\25\1\67\2\25\1\70\1\71\35\25"+
+    "\1\26\2\25\1\47\2\25\1\71\16\25\1\72\6\25"+
+    "\1\73\7\25\1\26\2\50\3\25\1\71\6\25\1\74"+
+    "\4\25\1\64\6\25\1\75\10\25\1\76\1\25\1\26"+
+    "\5\25\1\71\1\25\1\77\1\100\1\101\1\102\1\25"+
+    "\1\74\2\25\1\103\1\25\1\104\2\25\1\105\4\25"+
+    "\1\106\1\107\1\110\1\111\4\25\1\76\1\25\1\26"+
+    "\2\50\3\25\1\71\33\25\1\76\1\25\1\26\41\25"+
+    "\1\112\1\25\1\26\2\50\3\25\1\71\22\25\1\113"+
+    "\10\25\1\76\1\25\1\26\5\25\1\71\3\25\1\114"+
+    "\1\25\1\115\3\25\1\116\12\25\1\117\6\25\1\76"+
+    "\1\25\1\26\17\25\1\120\21\25\1\76\1\25\1\26"+
+    "\3\50\31\25\1\121\4\25\1\76\1\25\1\26\3\50"+
+    "\40\25\1\26\2\50\2\25\1\70\1\71\34\25\70\0"+
+    "\1\122\6\0\1\123\51\0\1\124\34\0\1\125\26\0"+
+    "\1\126\14\0\1\127\43\0\1\130\43\0\1\131\37\0"+
+    "\1\132\44\0\1\133\35\0\1\134\50\0\1\124\3\0"+
+    "\1\135\26\0\1\136\56\0\1\137\33\0\1\140\34\0"+
+    "\1\141\43\0\1\142\34\0\2\46\2\0\1\46\33\0"+
+    "\2\46\21\0\1\143\5\0\1\144\25\0\1\145\3\0"+
+    "\1\146\54\0\1\147\52\0\1\150\23\0\1\151\43\0"+
+    "\1\152\37\0\1\153\61\0\1\154\16\0\2\62\2\0"+
+    "\1\62\33\0\2\62\15\0\1\155\55\0\1\156\46\0"+
+    "\1\157\16\0\1\160\1\70\64\0\1\156\5\0\1\161"+
+    "\34\0\1\162\44\0\1\163\31\0\1\164\30\0\2\76"+
+    "\2\0\1\76\33\0\2\76\14\0\1\165\7\0\1\166"+
+    "\40\0\1\167\5\0\1\170\43\0\1\171\25\0\1\172"+
+    "\3\0\1\173\14\0\1\174\37\0\1\175\32\0\1\176"+
+    "\63\0\1\177\23\0\1\200\37\0\1\201\3\0\1\202"+
+    "\23\0\1\203\30\0\1\204\26\0\1\205\34\0\2\112"+
+    "\2\0\1\112\33\0\2\112\15\0\1\206\37\0\1\207"+
+    "\72\0\1\210\21\0\1\124\36\0\1\201\60\0\1\211"+
+    "\26\0\1\212\66\0\1\213\22\0\1\124\45\0\1\214"+
+    "\52\0\1\215\6\0\1\216\37\0\1\217\43\0\1\220"+
+    "\43\0\1\221\47\0\1\222\31\0\1\223\47\0\1\224"+
+    "\32\0\1\225\53\0\1\226\7\0\1\124\23\0\1\227"+
+    "\44\0\1\230\62\0\1\231\21\0\1\232\50\0\1\233"+
+    "\53\0\1\234\50\0\1\235\22\0\1\236\64\0\1\237"+
+    "\34\0\1\240\50\0\1\241\51\0\1\242\35\0\1\243"+
+    "\37\0\1\244\51\0\1\245\30\0\1\246\30\0\1\247"+
+    "\61\0\1\250\40\0\1\251\54\0\1\252\27\0\1\253"+
+    "\41\0\1\124\63\0\1\225\26\0\1\254\53\0\1\255"+
+    "\40\0\1\256\1\0\1\257\51\0\1\260\22\0\1\261"+
+    "\57\0\1\262\50\0\1\263\50\0\1\264\27\0\1\265"+
+    "\50\0\1\266\23\0\1\267\71\0\1\270\33\0\1\271"+
+    "\34\0\1\272\54\0\1\273\27\0\1\274\60\0\1\275"+
+    "\31\0\1\276\56\0\1\277\33\0\1\300\34\0\1\301"+
+    "\37\0\1\302\47\0\1\303\56\0\1\304\40\0\1\124"+
+    "\53\0\1\262\23\0\1\305\54\0\1\124\36\0\1\306"+
+    "\37\0\1\307\43\0\1\310\37\0\1\303\64\0\1\271"+
+    "\22\0\1\311\56\0\1\312\40\0\1\313\46\0\1\314"+
+    "\34\0\1\315\47\0\1\316\37\0\1\317\43\0\1\320"+
+    "\47\0\1\321\56\0\1\315\22\0\1\322\63\0\1\323"+
+    "\35\0\1\324\42\0\1\124\50\0\1\325\27\0\1\326"+
+    "\43\0\1\327\47\0\1\330\46\0\1\331\54\0\1\332"+
+    "\41\0\1\333\25\0\1\334\47\0\1\335\52\0\1\124"+
+    "\30\0\1\336\43\0\1\337\47\0\1\340\46\0\1\271"+
+    "\53\0\1\334\24\0\1\124\57\0\1\341\25\0\1\342"+
+    "\45\0\1\343\41\0\1\344\63\0\1\306\37\0\1\124"+
+    "\51\0\1\345\40\0\1\346\45\0\1\347\43\0\1\271"+
+    "\41\0\1\350\45\0\1\124\41\0\1\124\24\0\1\306"+
+    "\42\0\1\351\46\0\1\352\54\0\1\242\32\0\1\353"+
+    "\53\0\1\321\35\0\1\354\56\0\1\355\22\0\1\356"+
+    "\52\0\1\357\57\0\1\360\20\0\1\361\67\0\1\271"+
+    "\27\0\1\362\54\0\1\363\37\0\1\270\32\0\1\364"+
+    "\53\0\1\223\52\0\1\365\34\0\1\340\35\0\1\366"+
+    "\56\0\1\367\22\0\1\370\67\0\1\371\26\0\1\372"+
+    "\55\0\1\373\22\0\1\374\47\0\1\375\43\0\1\376"+
+    "\62\0\1\377\20\0\1\u0100\43\0\1\u0101\47\0\1\u0102"+
+    "\47\0\1\u0103\46\0\1\315\30\0\1\u0102\64\0\1\u0104"+
+    "\43\0\1\155\30\0\1\223\41\0\1\u0105\37\0\1\u0106"+
+    "\64\0\1\u0107\26\0\1\u0108\47\0\1\u0109\46\0\1\334"+
+    "\34\0\1\u010a\37\0\1\u0108\47\0\1\u010b\42\0\1\271"+
+    "\62\0\1\124\43\0\1\312\36\0\1\315\47\0\1\315"+
+    "\24\0\1\315\41\0\1\u010c\60\0\1\u010d\43\0\1\334"+
+    "\26\0\1\u010e\64\0\1\334\24\0\1\u010f\56\0\1\u0110"+
+    "\36\0\1\u0111\35\0\1\345\51\0\1\u0112\35\0\1\u0113"+
+    "\56\0\1\u0114\43\0\1\306\32\0\1\u0115\62\0\1\u0116"+
+    "\42\0\1\u0117\10\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[6228];
+    int [] result = new int[9180];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -296,13 +348,14 @@ public class AnalizadorLexicoDB {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\13\0\2\11\23\1\3\11\11\1\2\11\3\1\1\11"+
-    "\1\1\1\11\2\1\1\11\3\1\2\0\1\1\1\11"+
-    "\104\0\2\11\1\0\1\1\21\0\1\11\16\0\1\11"+
-    "\11\0\1\11\15\0\1\11";
+    "\24\0\2\11\20\1\3\11\11\1\1\11\3\1\1\11"+
+    "\1\1\1\11\30\1\1\0\1\1\1\11\120\0\1\11"+
+    "\1\0\1\1\14\0\1\11\17\0\1\11\10\0\1\11"+
+    "\16\0\1\11\11\0\1\11\3\0\1\11\23\0\2\11"+
+    "\12\0\1\11\4\0\1\11\6\0\2\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[191];
+    int [] result = new int[279];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -818,112 +871,142 @@ public class AnalizadorLexicoDB {
             { System.out.print(yytext());
             }
           // fall through
-          case 23: break;
+          case 29: break;
           case 2:
             { añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));
             }
           // fall through
-          case 24: break;
+          case 30: break;
           case 3:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,FUCSIA); añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);
+            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);
             }
           // fall through
-          case 25: break;
+          case 31: break;
           case 4:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);
             }
           // fall through
-          case 26: break;
+          case 32: break;
           case 5:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));
             }
           // fall through
-          case 27: break;
+          case 33: break;
           case 6:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);
             }
           // fall through
-          case 28: break;
+          case 34: break;
           case 7:
             { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(TIPO_DE_DATO);
             }
           // fall through
-          case 29: break;
+          case 35: break;
           case 8:
             { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(DEFINIR_VALOR);
             }
           // fall through
-          case 30: break;
+          case 36: break;
           case 9:
-            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);
-            }
-          // fall through
-          case 31: break;
-          case 10:
             { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);
             }
           // fall through
-          case 32: break;
-          case 11:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));
-            }
-          // fall through
-          case 33: break;
-          case 12:
-            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);
-            }
-          // fall through
-          case 34: break;
-          case 13:
-            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));
-            }
-          // fall through
-          case 35: break;
-          case 14:
-            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));
-            }
-          // fall through
-          case 36: break;
-          case 15:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));
-            }
-          // fall through
           case 37: break;
-          case 16:
-            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));
+          case 10:
+            { añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));
             }
           // fall through
           case 38: break;
-          case 17:
-            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);
+          case 11:
+            { añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);
             }
           // fall through
           case 39: break;
-          case 18:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));
+          case 12:
+            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));
             }
           // fall through
           case 40: break;
+          case 13:
+            { añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));yybegin(IDENTIFICADOR_KEY);
+            }
+          // fall through
+          case 41: break;
+          case 14:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));
+            }
+          // fall through
+          case 42: break;
+          case 15:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);
+            }
+          // fall through
+          case 43: break;
+          case 16:
+            { añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));
+            }
+          // fall through
+          case 44: break;
+          case 17:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_KEY);
+            }
+          // fall through
+          case 45: break;
+          case 18:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(MODIFICADOR_DROP);
+            }
+          // fall through
+          case 46: break;
           case 19:
             { añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(ATRIBUTOS_TABLA);
             }
           // fall through
-          case 41: break;
+          case 47: break;
           case 20:
-            { pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);
+            { añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));
             }
           // fall through
-          case 42: break;
+          case 48: break;
           case 21:
-            { pintar.pintarPalabra((int)yychar,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL_MODIFICADOR);
             }
           // fall through
-          case 43: break;
+          case 49: break;
           case 22:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);
+            }
+          // fall through
+          case 50: break;
+          case 23:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);
+            }
+          // fall through
+          case 51: break;
+          case 24:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DML_INSERCION);
+            }
+          // fall through
+          case 52: break;
+          case 25:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_UNIQUE);
+            }
+          // fall through
+          case 53: break;
+          case 26:
+            { añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(DEFINIR_VALOR_NUEMRIC);
+            }
+          // fall through
+          case 54: break;
+          case 27:
             { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(CONSTRUIR_LLAVE);
             }
           // fall through
-          case 44: break;
+          case 55: break;
+          case 28:
+            { añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_REFERENCES);
+            }
+          // fall through
+          case 56: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

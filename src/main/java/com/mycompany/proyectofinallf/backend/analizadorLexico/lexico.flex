@@ -82,7 +82,7 @@ MAYOR_IGUAL = '>='
 AND = "AND"
 OR = "OR"
 NOT = "NOT"
-SIGNOS_LOGICOS = ("AND", "OR", "NOT")
+SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
 // ESTADOS
 %state CONSULTA_SQL
 %state COMENTARIO_LINEA
@@ -95,57 +95,61 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
 %state DEFINIR_VALOR
 %state ESTABLECER_VALOR_NO_NULO
 %state CONSTRUIR_LLAVE
+%state DDL_MODIFICADOR
+%state IDENTIFICADOR_UNIQUE
+%state IDENTIFICADOR_REFERENCES
+%state IDENTIFICADOR_KEY
+%state MODIFICADOR_DROP
+%state DML_INSERCION
+%state IDENTIFICADORES_PARA_INSERCION
+%state EVALUAR_DATOS_INSERCION
+%state DEFINIR_VALOR_NUEMRIC
 
 %%
 
 // REGLAS DE ESCANEO
+//
 <YYINITIAL>{
-    {ESPACIOS}                  {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
-    "CREATE"            {pintar.pintarPalabra((int)yychar,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);}
-    "ALTER"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ADD"               {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "COLUMN"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "TYPE"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "DROP"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "IF"                {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "EXIST"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "CASCADE"           {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ON"                {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "DELETE"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "SET"               {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "UPDATE"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "INSERT"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "INTO"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "VALUES"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "SELECT"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "FROM"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "WHERE"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "AS"                {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "GROUP"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ORDER"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "BY"                {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ASC"               {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "DESC"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "LIMIT"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "JOIN"              {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "CREATE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);}
+    "ALTER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL_MODIFICADOR);}
+    "DROP"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(MODIFICADOR_DROP);}
+    "ON"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "DELETE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "SET"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "UPDATE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "INSERT"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DML_INSERCION);}
+    "SELECT"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "FROM"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "WHERE"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "AS"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "GROUP"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "ORDER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "BY"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "ASC"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "DESC"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "LIMIT"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "JOIN"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
 }
+
+//CREACION DE BASES DE DATOS Y TABLAS
 <DDL>{
-    {ESPACIOS}                  {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
-    "DATABASE"          {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
-    "TABLE"             {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "DATABASE"          {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
+    "TABLE"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(IDENTIFICADOR);}
 }
 <IDENTIFICADOR>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
-    {IDENTIFICADOR}     {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,FUCSIA); añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn)); yybegin(SIGNOS);}
 }
 <SIGNOS>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
-    "("                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
-    ")"                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
-    ";"                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);}
-    ","                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
-    "."                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
-    "="                 {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NEGRO); añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(YYINITIAL);}
+    ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "."                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "="                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
 }
 <ESTRUCTURA_DECLARACION_TABLAS>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
@@ -178,13 +182,14 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     "NULL"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn)); yybegin(ESTRUCTURA_DECLARACION_TABLAS);}
     ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
-    "UNIQUE"            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,NARANJA); añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "UNIQUE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
 }
 <DEFINIR_VALOR>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
-    {ENTERO}            {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
-    {DECIMAL}           {pintar.pintarPalabra(yycolumn,yylength()+contadorSaltosDeLinea,AZUL); añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
+    {ENTERO}            {añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
+    {DECIMAL}           {añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
     ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(ESTABLECER_VALOR_NO_NULO);}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
 }
 <CONSTRUIR_LLAVE>{
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
@@ -195,4 +200,87 @@ SIGNOS_LOGICOS = ("AND", "OR", "NOT")
     ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
     "REFERENCES"        {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+
+//CREACION DE MODIFICADORES
+<DDL_MODIFICADOR>{
+    "TABLE"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "ADD"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "COLUMN"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "INTEGER"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "BIGINT"            {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "VARCHAR"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "DECIMAL"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "NUMERIC"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));yybegin(DEFINIR_VALOR_NUEMRIC);}
+    "DATE"              {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "TEXT"              {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "BOOLEAN"           {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "SERIAL"            {añadirToken(new Token(yytext(), TipoToken.TIPO_DE_DATO, MORADO, yyline, yycolumn));}
+    "ALTER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "TYPE"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "DROP"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "CONSTRAINT"        {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "FOREIGN"           {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "UNIQUE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_UNIQUE);}
+    "KEY"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_KEY);}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+<IDENTIFICADOR_UNIQUE>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+<IDENTIFICADOR_KEY>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "REFERENCES"        {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));yybegin(IDENTIFICADOR_REFERENCES);}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+<IDENTIFICADOR_REFERENCES>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));yybegin(IDENTIFICADOR_KEY);}
+}
+<MODIFICADOR_DROP>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "TABLE"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "IF"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "EXIST"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "CASCADE"           {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+<DEFINIR_VALOR_NUEMRIC>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {ENTERO}            {añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
+    {DECIMAL}           {añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+
+//CREACION DE INSERCION
+<DML_INSERCION>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "INTO"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+}
+<IDENTIFICADORES_PARA_INSERCION>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "VALUES"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+}
+<EVALUAR_DATOS_INSERCION>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ","                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
 }
