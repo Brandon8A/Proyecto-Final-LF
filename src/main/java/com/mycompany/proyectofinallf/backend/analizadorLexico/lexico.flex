@@ -53,27 +53,9 @@ CADENA = '([^']*?)'
 IDENTIFICADOR = [a-z]+[_(a-z0-9)]*
 //ESPACIOS
 ESPACIOS = [" "\r\t\b\n]
-// FUNCIONES DE AGREGACION
-SUM = "SUM"
-AVG = "AVG"
-COUNT = "COUNT"
-MAX = "MAX"
-MIN = "MIN"
-// SIGNOS
-PARENTESIS_IZQUIERDO = '\('
-PARENTESIS_DERECHO = '\)'
-COMA = ','
-PUNTO = '.'
-IGUAL = '='
-// SIGNOS RELACIONALES
-MENOR = '<'
-MAYOR = '>'
-MENOR_IGUAL = '<='
-MAYOR_IGUAL = '>='
-// SIGNOS LOGICOS
-AND = "AND"
-OR = "OR"
-NOT = "NOT"
+//SELECCION COLUMNAS ID_ID
+SELECCION_COLUMNAS_ID_ID = {IDENTIFICADOR}"."{IDENTIFICADOR}
+//SIGNOS LOGICOS
 SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
 // ESTADOS
 %state CONSULTA_SQL
@@ -96,33 +78,25 @@ SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
 %state IDENTIFICADORES_PARA_INSERCION
 %state EVALUAR_DATOS_INSERCION
 %state DEFINIR_VALOR_NUEMRIC
+%state DML_LECTURA
+%state IDENTIFICADOR_FUNCION_AGREGACION
+%state CERRAR_IDENTIFICADOR_FUNCION_AGREGACION
+%state DATO_ENTERO_LIMIT
 
 %%
 
 // REGLAS DE ESCANEO
 //
 <YYINITIAL>{
-    {FECHA}             {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, AMARILLO, yyline, yycolumn));}
     {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
     "CREATE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL);}
     "ALTER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DDL_MODIFICADOR);}
     "DROP"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(MODIFICADOR_DROP);}
-    "ON"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "DELETE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "SET"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "UPDATE"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
     "INSERT"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DML_INSERCION);}
-    "SELECT"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "FROM"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "WHERE"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "AS"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "GROUP"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ORDER"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "BY"                {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "ASC"               {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "DESC"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "LIMIT"             {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
-    "JOIN"              {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "SELECT"            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DML_LECTURA);}
 }
 
 //CREACION DE BASES DE DATOS Y TABLAS
@@ -291,4 +265,57 @@ SIGNOS_LOGICOS = ("AND"|"OR"|"NOT")
     "<="                {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
     ">="                {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
     ";"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+}
+
+//CREACION LECTURA
+<DML_LECTURA>{
+    {ESPACIOS}                      {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "*"                             {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, NEGRO, yyline, yycolumn));}
+    "FROM"                          {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    {IDENTIFICADOR}                 {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    ";"                             {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(YYINITIAL);}
+    "JOIN"                          {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "WHERE"                         {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "GROUP"                         {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "ORDER"                         {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "LIMIT"                         {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn)); yybegin(DATO_ENTERO_LIMIT);}
+    {SELECCION_COLUMNAS_ID_ID}      {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));}
+    ","                             {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    "COUNT"                         {añadirToken(new Token(yytext(), TipoToken.FUNCION_AGREGACION, AZUL, yyline, yycolumn)); yybegin(IDENTIFICADOR_FUNCION_AGREGACION);}
+    "AVG"                           {añadirToken(new Token(yytext(), TipoToken.FUNCION_AGREGACION, AZUL, yyline, yycolumn)); yybegin(IDENTIFICADOR_FUNCION_AGREGACION);}
+    "MAX"                           {añadirToken(new Token(yytext(), TipoToken.FUNCION_AGREGACION, AZUL, yyline, yycolumn)); yybegin(IDENTIFICADOR_FUNCION_AGREGACION);}
+    "MIN"                           {añadirToken(new Token(yytext(), TipoToken.FUNCION_AGREGACION, AZUL, yyline, yycolumn)); yybegin(IDENTIFICADOR_FUNCION_AGREGACION);}
+    "SUM"                           {añadirToken(new Token(yytext(), TipoToken.FUNCION_AGREGACION, AZUL, yyline, yycolumn)); yybegin(IDENTIFICADOR_FUNCION_AGREGACION);}
+    "ON"                            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "="                             {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    {DECIMAL}                       {añadirToken(new Token(yytext(), TipoToken.DECIMAL, AZUL, yyline, yycolumn));}
+    {ENTERO}                        {añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));}
+    {FECHA}                         {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, AMARILLO, yyline, yycolumn));}
+    {CADENA}                        {añadirToken(new Token(yytext(), TipoToken.ARITMETICO, VERDE, yyline, yycolumn));}
+    "FALSE"                         {añadirToken(new Token(yytext(), TipoToken.BOOLEANO, AZUL, yyline, yycolumn));}
+    "TRUE"                          {añadirToken(new Token(yytext(), TipoToken.BOOLEANO, AZUL, yyline, yycolumn));}
+    ">"                             {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    "<"                             {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    "<="                            {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    ">="                            {añadirToken(new Token(yytext(), TipoToken.RELACIONAL, NEGRO, yyline, yycolumn));}
+    {SIGNOS_LOGICOS}                {añadirToken(new Token(yytext(), TipoToken.LOGICO, NARANJA, yyline, yycolumn));}
+    "BY"                            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "DESC"                          {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "ASC"                           {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "AS"                            {añadirToken(new Token(yytext(), TipoToken.CREATE, NARANJA, yyline, yycolumn));}
+    "("                             {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    ")"                             {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+}
+<IDENTIFICADOR_FUNCION_AGREGACION>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    "("                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));}
+    {IDENTIFICADOR}     {añadirToken(new Token(yytext(), TipoToken.IDENTIFICADOR, FUCSIA, yyline, yycolumn));yybegin(CERRAR_IDENTIFICADOR_FUNCION_AGREGACION);}
+}
+<CERRAR_IDENTIFICADOR_FUNCION_AGREGACION>{
+    {ESPACIOS}          {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    ")"                 {añadirToken(new Token(yytext(), TipoToken.SIGNOS, NEGRO, yyline, yycolumn));yybegin(DML_LECTURA);}
+}
+<DATO_ENTERO_LIMIT>{
+    {ESPACIOS}                      {añadirToken(new Token(yytext(), TipoToken.ESPACIOS, null, yyline, yycolumn));}
+    {ENTERO}            {añadirToken(new Token(yytext(), TipoToken.ENTERO, AZUL, yyline, yycolumn));yybegin(DML_LECTURA);}
 }
