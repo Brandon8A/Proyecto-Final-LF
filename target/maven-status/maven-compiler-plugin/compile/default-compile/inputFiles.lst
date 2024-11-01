@@ -1,6 +1,12 @@
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/Analizar.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/Controlador.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/PintarPalabras.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/Reportes.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/analizadorLexico/AnalizadorLexicoDB.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/analizadorSintactico/AnalizadorSintactico.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/esquema/Table.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/operacion/Operacion.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/token/TipoToken.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/token/Token.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/reportes/DialogReportesTablas.java

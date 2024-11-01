@@ -14,6 +14,7 @@ public class Token {
     private String color;
     private int fila;
     private int columna;
+    private String descripcion;
 
     public Token(String lexema, TipoToken tipoToken, String color, int fila, int columna) {
         this.lexema = lexema;
@@ -22,6 +23,22 @@ public class Token {
         this.fila = fila;
         this.columna = columna;
     }
+
+    public Token(String lexema, TipoToken tipoToken, int fila, int columna) {
+        this.lexema = lexema;
+        this.tipoToken = tipoToken;
+        this.fila = fila;
+        this.columna = columna;
+    }
+
+    public Token(String lexema, TipoToken tipoToken, int fila, int columna, String descripcion) {
+        this.lexema = lexema;
+        this.tipoToken = tipoToken;
+        this.fila = fila;
+        this.columna = columna;
+        this.descripcion = descripcion;
+    }
+    
 
     public String getLexema() {
         return lexema;
@@ -41,6 +58,10 @@ public class Token {
 
     public int getColumna() {
         return columna;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
     }
     
     

@@ -23,5 +23,6 @@ public enum TipoToken {
     RELACIONAL,
     LOGICO,
     COMENTARIO_DE_LINEA,
-    ESPACIOS
+    ESPACIOS,
+    ERROR
 }

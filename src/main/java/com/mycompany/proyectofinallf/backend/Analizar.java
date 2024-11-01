@@ -5,6 +5,7 @@
 package com.mycompany.proyectofinallf.backend;
 
 import com.mycompany.proyectofinallf.backend.analizadorLexico.AnalizadorLexicoDB;
+import com.mycompany.proyectofinallf.backend.analizadorSintactico.AnalizadorSintactico;
 import com.mycompany.proyectofinallf.backend.token.Token;
 import com.mycompany.proyectofinallf.frontend.FrameAnalizadorLexico;
 import java.io.IOException;
@@ -23,10 +24,12 @@ public class Analizar {
     private List<Token> listaTokens;
     private AnalizadorLexicoDB analizadorLexicoDB;
     private FrameAnalizadorLexico frameAnalizadorLexico;
+    private Controlador controlador;
 
-    public Analizar(String entrada, FrameAnalizadorLexico frameAnalizadorLexico) {
+    public Analizar(String entrada, FrameAnalizadorLexico frameAnalizadorLexico, Controlador controlador) {
         this.entrada = entrada;
         this.frameAnalizadorLexico = frameAnalizadorLexico;
+        this.controlador = controlador;
     }
 
     public void analizar() {
@@ -48,19 +51,16 @@ public class Analizar {
         }
         listaTokens = analizadorLexicoDB.getListaTokens();
         frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setText("");
-        for (int i = listaTokens.size()-1; 0 <= i; i--) {
-            System.out.println("TOKEN --> "+listaTokens.get(i).getLexema());
+        for (int i = listaTokens.size() - 1; 0 <= i; i--) {
+            System.out.println("TOKEN --> " + listaTokens.get(i).getLexema());
             analizadorLexicoDB.pintar.darEstilo(listaTokens.get(i).getLexema());
             if (listaTokens.get(i).getColor() != null) {
                 analizadorLexicoDB.pintar.pintarPalabra(0, listaTokens.get(i).getLexema().length(), listaTokens.get(i).getColor());
             }
             frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setDocument(analizadorLexicoDB.pintar.txtPaneCodigoAnalizado.getDocument());
-//            if (i == 0) {
-//                frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setText(frameAnalizadorLexico.getTxtPaneCodigoAnalizado().getText() + listaTokens.get(i).getLexema());
-//            }else{
-//                frameAnalizadorLexico.getTxtPaneCodigoAnalizado().setText(frameAnalizadorLexico.getTxtPaneCodigoAnalizado().getText() + " " +listaTokens.get(i).getLexema());
-//            }
         }
+        AnalizadorSintactico analizadorSintactico = new AnalizadorSintactico(listaTokens, analizadorLexicoDB, controlador);
+        analizadorSintactico.analizar();
     }
 
 }
