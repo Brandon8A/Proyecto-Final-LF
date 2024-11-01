@@ -6,6 +6,8 @@ package com.mycompany.proyectofinallf.frontend;
 
 import com.mycompany.proyectofinallf.backend.Analizar;
 import com.mycompany.proyectofinallf.backend.Controlador;
+import com.mycompany.proyectofinallf.frontend.reportes.DialogReportesErroresLexicos;
+import com.mycompany.proyectofinallf.frontend.reportes.DialogReportesErroresSintacticos;
 import com.mycompany.proyectofinallf.frontend.reportes.DialogReportesTablas;
 import javax.swing.JTextPane;
 
@@ -16,6 +18,7 @@ import javax.swing.JTextPane;
 public class FrameAnalizadorLexico extends javax.swing.JFrame {
 
     private Controlador controlador;
+
     /**
      * Creates new form FrameAnalizadorLexico
      */
@@ -46,6 +49,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
         menuItemErroresLexicos = new javax.swing.JMenuItem();
         menuItemErroresSintacticos = new javax.swing.JMenuItem();
         menuItemTablas = new javax.swing.JMenuItem();
+        menuItemReporteOperacionPorSeccion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -113,6 +117,11 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
         menuReportes.add(menuItemErroresLexicos);
 
         menuItemErroresSintacticos.setText("Errores Sintacticos");
+        menuItemErroresSintacticos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemErroresSintacticosActionPerformed(evt);
+            }
+        });
         menuReportes.add(menuItemErroresSintacticos);
 
         menuItemTablas.setText("Tablas Encontradas");
@@ -122,6 +131,9 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
             }
         });
         menuReportes.add(menuItemTablas);
+
+        menuItemReporteOperacionPorSeccion.setText("Operacion por Seccion");
+        menuReportes.add(menuItemReporteOperacionPorSeccion);
 
         jMenuBar1.add(menuReportes);
 
@@ -156,13 +168,18 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
 
     private void menuItemErroresLexicosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemErroresLexicosActionPerformed
         // TODO add your handling code here:
-        
+        DialogReportesErroresLexicos dialogReportesErroresLexicos = new DialogReportesErroresLexicos(this, false, controlador);
     }//GEN-LAST:event_menuItemErroresLexicosActionPerformed
 
     private void menuItemTablasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemTablasActionPerformed
         // TODO add your handling code here:
-        DialogReportesTablas dReportesTablas = new DialogReportesTablas(this, false,controlador);
+        DialogReportesTablas dReportesTablas = new DialogReportesTablas(this, false, controlador);
     }//GEN-LAST:event_menuItemTablasActionPerformed
+
+    private void menuItemErroresSintacticosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemErroresSintacticosActionPerformed
+        // TODO add your handling code here:
+        DialogReportesErroresSintacticos dialogReportesErroresSintacticos = new DialogReportesErroresSintacticos(this, false, controlador);
+    }//GEN-LAST:event_menuItemErroresSintacticosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -207,7 +224,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
         return txtPaneCodigoAnalizado;
     }
 
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAnalizarCodigo;
     private javax.swing.JMenuBar jMenuBar1;
@@ -215,6 +232,7 @@ public class FrameAnalizadorLexico extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JMenuItem menuItemErroresLexicos;
     private javax.swing.JMenuItem menuItemErroresSintacticos;
+    private javax.swing.JMenuItem menuItemReporteOperacionPorSeccion;
     private javax.swing.JMenuItem menuItemTablas;
     private javax.swing.JMenu menuReportes;
     private javax.swing.JPanel pnlAnalizarCodigo;

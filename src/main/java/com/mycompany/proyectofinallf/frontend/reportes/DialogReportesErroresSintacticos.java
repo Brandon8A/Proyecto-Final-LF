@@ -5,6 +5,7 @@
 package com.mycompany.proyectofinallf.frontend.reportes;
 
 import com.mycompany.proyectofinallf.backend.Controlador;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,7 +23,11 @@ public class DialogReportesErroresSintacticos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.controlador = controlador;
-        agregarTabla();
+        if (!controlador.getReportes().getListaTokenErrorSintactico().isEmpty()) {
+            agregarTabla();
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay errores sintacticos para mostrar.");
+        }
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }

@@ -14,6 +14,7 @@ com/mycompany/proyectofinallf/frontend/reportes/DialogReportesOperacionPorSeccio
 com/mycompany/proyectofinallf/frontend/reportes/DialogReportesTablas.class
 com/mycompany/proyectofinallf/backend/Analizar.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$2.class
+com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$5.class
 com/mycompany/proyectofinallf/backend/token/TipoToken.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$1.class
 com/mycompany/proyectofinallf/backend/Controlador.class

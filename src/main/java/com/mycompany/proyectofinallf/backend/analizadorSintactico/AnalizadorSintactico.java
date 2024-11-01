@@ -8,6 +8,7 @@ import com.mycompany.proyectofinallf.backend.Controlador;
 import com.mycompany.proyectofinallf.backend.Reportes;
 import com.mycompany.proyectofinallf.backend.analizadorLexico.AnalizadorLexicoDB;
 import com.mycompany.proyectofinallf.backend.esquema.Table;
+import com.mycompany.proyectofinallf.backend.operacion.Operacion;
 import com.mycompany.proyectofinallf.backend.token.Token;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,13 @@ public class AnalizadorSintactico {
     private int posicionToken = 0;
     private List<Token> listaConsultaCorrecta = new ArrayList<>();
     private List<Token> listaTokenErrorSintactico = new ArrayList<>();
-    private List<Integer> operacionCreate = new ArrayList<>();
     private List<Table> tablasCreadas = new ArrayList<>();
+    private List<Operacion> operacionCreate = new ArrayList<>();
+    private List<Operacion> operacionDelete = new ArrayList<>();
+    private List<Operacion> operacionUpdate = new ArrayList<>();
+    private List<Operacion> operacionSelect = new ArrayList<>();
+    private List<Operacion> operacionAlter = new ArrayList<>();
+    private int numeroOperacion = 1;
     private AnalizadorLexicoDB analizadorLexicoDB;
     private Controlador controlador;
 
@@ -49,7 +55,7 @@ public class AnalizadorSintactico {
             }
             saltarEspacios(estructuraAnalizar);
             if (!estructuraAnalizar.isEmpty() && isDDL(estructuraAnalizar)) {
-                if (estructuraAnalizar.get(0).getLexema().equals("CREATE") && !estructuraAnalizar.isEmpty()) {
+                if (!estructuraAnalizar.isEmpty() && estructuraAnalizar.get(0).getLexema().equals("CREATE")) {
                     listaConsultaCorrecta.add(estructuraAnalizar.get(0));
                     estructuraAnalizar.remove(0);
                     estructuraCreate(estructuraAnalizar);
@@ -60,17 +66,37 @@ public class AnalizadorSintactico {
                 } else {
                     omitirErrorSintactico(estructuraAnalizar, "Se esperaba token: CREATE, ALTER o DROP");
                 }
+            } else if (isDML(estructuraAnalizar)) {
+                if (!estructuraAnalizar.isEmpty() && estructuraAnalizar.get(0).getLexema().equals("INSERT")) {
+
+                } else if (!estructuraAnalizar.isEmpty() && estructuraAnalizar.get(0).getLexema().equals("SELECT")) {
+
+                } else if (!estructuraAnalizar.isEmpty() && estructuraAnalizar.get(0).getLexema().equals("UPDATE")) {
+
+                } else if (!estructuraAnalizar.isEmpty() && estructuraAnalizar.get(0).getLexema().equals("DELETE")) {
+                    listaConsultaCorrecta.add(estructuraAnalizar.get(0));
+                    estructuraAnalizar.remove(0);
+                    saltarEspacios(estructuraAnalizar);
+                    estructuraDelete(estructuraAnalizar);
+                } else {
+                    omitirErrorSintactico(estructuraAnalizar, "Se esperaba una instruccion DDL");
+                }
             } else {
-                System.out.println("NO es DDL");
+                omitirErrorSintactico(estructuraAnalizar, "Se esperaba instuccion DDL o DML");
             }
         }
-        Reportes reportes = new Reportes(tablasCreadas, listaTokenErrorSintactico, analizadorLexicoDB.getListaTokensErrores());
+        Reportes reportes = new Reportes(tablasCreadas, listaTokenErrorSintactico, analizadorLexicoDB.getListaTokensErrores(), operacionCreate, operacionDelete, operacionUpdate, operacionSelect, operacionAlter);
         controlador.setReportes(reportes);
     }
 
     private boolean isDDL(List<Token> estructuraList) {
         return estructuraList.get(0).getLexema().equals("CREATE") || estructuraList.get(0).getLexema().equals("ALTER")
                 || estructuraList.get(0).getLexema().equals("DROP");
+    }
+
+    private boolean isDML(List<Token> estructuraList) {
+        return estructuraList.get(0).getLexema().equals("INSERT") || estructuraList.get(0).getLexema().equals("SELECT")
+                || estructuraList.get(0).getLexema().equals("UPDATE") || estructuraList.get(0).getLexema().equals("DELETE");
     }
 
     private void omitirErrorSintactico(List<Token> estructuraList, String descripcionError) {
@@ -91,7 +117,6 @@ public class AnalizadorSintactico {
     private void estructuraCreate(List<Token> estructuraList) {
         saltarEspacios(estructuraList);
         if (!estructuraList.isEmpty() && estructuraList.get(0).getLexema().equals("DATABASE")) {
-            System.out.println("Ir hacia funcion identificador DATABASE");
             listaConsultaCorrecta.add(estructuraList.get(0));
             estructuraList.remove(0);
             saltarEspacios(estructuraList);
@@ -101,9 +126,9 @@ public class AnalizadorSintactico {
                 estructuraList.remove(0);
                 saltarEspacios(estructuraList);
                 if (!estructuraList.isEmpty() && terminarConsulta(estructuraList)) {
-                    System.out.println("Consultar creada con EXITO.");
+                    operacionCreate.add(new Operacion("DDL", numeroOperacion, "CREATE"));
                     listaConsultaCorrecta.add(estructuraList.get(0));
-                    operacionCreate.add(operacionCreate.size() + 1);
+                    numeroOperacion++;
                 } else if (estructuraList.isEmpty()) {
                     omitirErrorSintactico(estructuraList, "Faltan estructuras para la consulta");
                 } else {
@@ -494,6 +519,7 @@ public class AnalizadorSintactico {
                                                         if (!estructuraList.isEmpty() && estructuraList.get(0).getLexema().equals(";")) {
                                                             listaConsultaCorrecta.add(estructuraList.get(0));
                                                             tablasCreadas.add(tabla);
+                                                            operacionCreate.add(new Operacion("DDL", numeroOperacion, "CREATE"));
                                                             estructuraList.remove(0);
                                                             saltarEspacios(estructuraList);
                                                         } else if (estructuraList.isEmpty()) {
@@ -580,4 +606,50 @@ public class AnalizadorSintactico {
         }
         return coincideLlaveForanea;
     }
+
+    private void estructuraDelete(List<Token> estructuraList) {
+        if (!estructuraList.isEmpty() && estructuraList.get(0).getLexema().equals("FROM")) {
+            listaConsultaCorrecta.add(estructuraList.get(0));
+            estructuraList.remove(0);
+            saltarEspacios(estructuraList);
+            if (!estructuraList.isEmpty() && identificador(estructuraList.get(0).getLexema())) {
+                Operacion operacionDelete = new Operacion("DELETE", numeroOperacion, estructuraList.get(0).getLexema());
+                listaConsultaCorrecta.add(estructuraList.get(0));
+                estructuraList.remove(0);
+                saltarEspacios(estructuraList);
+                if (!estructuraList.isEmpty() && estructuraList.get(0).getLexema().equals("WHERE")) {
+                    estructuraWhere(estructuraList, operacionDelete);
+                }else if (!estructuraList.isEmpty() && estructuraList.get(0).getLexema().equals(";")) {
+                    listaConsultaCorrecta.add(estructuraList.get(0));
+                    estructuraList.remove(0);
+                    saltarEspacios(estructuraList);
+                    this.operacionDelete.add(operacionDelete);
+                } else if (estructuraList.isEmpty()) {
+                    omitirErrorSintactico(estructuraList, "Valor vacio");
+                } else {
+                    omitirErrorSintactico(estructuraList, "Se esperaba estructura 'WHERE' o ';' para terminar la instuccion");
+                }
+            } else if (estructuraList.isEmpty()) {
+                omitirErrorSintactico(estructuraList, "Faltan estructuras");
+            } else {
+                omitirErrorSintactico(estructuraList, "Se esperaba un identificador");
+            }
+        } else if (estructuraList.isEmpty()) {
+            omitirErrorSintactico(estructuraList, "Sin instruccion");
+        } else {
+            omitirErrorSintactico(estructuraList, "Se esperaba valor 'FROM'");
+        }
+    }
+    
+    private void estructuraWhere(List<Token> estructuraList, Operacion operacion){
+        if (!estructuraList.isEmpty() && identificador(estructuraList.get(0).getLexema())) {
+            
+        }else if (true) {
+            
+        }
+    }
+    
+//    private boolean isDato(){
+//        return 
+//    }
 }

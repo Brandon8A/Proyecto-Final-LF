@@ -6,6 +6,7 @@ package com.mycompany.proyectofinallf.frontend.reportes;
 
 import com.mycompany.proyectofinallf.backend.Controlador;
 import java.awt.GridLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +25,11 @@ public class DialogReportesTablas extends javax.swing.JDialog {
         super(parent, modal);
         this.controlador = controlador;
         initComponents();
-        agregarTablas();
+        if (!controlador.getReportes().getTablasCreadas().isEmpty()) {
+            agregarTablas();
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay tablas para mostrar");
+        }
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
