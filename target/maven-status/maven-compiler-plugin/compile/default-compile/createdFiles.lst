@@ -2,12 +2,15 @@ com/mycompany/proyectofinallf/backend/analizadorSintactico/AnalizadorSintactico.
 com/mycompany/proyectofinallf/backend/token/Token.class
 com/mycompany/proyectofinallf/backend/esquema/Table.class
 com/mycompany/proyectofinallf/backend/Reportes.class
+com/mycompany/proyectofinallf/frontend/reportes/DialogReportesErroresLexicos.class
 com/mycompany/proyectofinallf/backend/analizadorLexico/AnalizadorLexicoDB.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$4.class
 com/mycompany/proyectofinallf/backend/PintarPalabras.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico.class
 com/mycompany/proyectofinallf/backend/operacion/Operacion.class
+com/mycompany/proyectofinallf/frontend/reportes/DialogReportesErroresSintacticos.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$3.class
+com/mycompany/proyectofinallf/frontend/reportes/DialogReportesOperacionPorSeccion.class
 com/mycompany/proyectofinallf/frontend/reportes/DialogReportesTablas.class
 com/mycompany/proyectofinallf/backend/Analizar.class
 com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico$2.class

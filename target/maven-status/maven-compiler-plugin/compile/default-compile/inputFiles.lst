@@ -9,4 +9,7 @@
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/token/TipoToken.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/backend/token/Token.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/FrameAnalizadorLexico.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/reportes/DialogReportesErroresLexicos.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/reportes/DialogReportesErroresSintacticos.java
+/home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/reportes/DialogReportesOperacionPorSeccion.java
 /home/brandon/NetBeansProjects/Proyecto Final LF/src/main/java/com/mycompany/proyectofinallf/frontend/reportes/DialogReportesTablas.java
